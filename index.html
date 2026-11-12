@@ -275,7 +275,7 @@
             </div>
 
             <!-- Центральный кружок аватарки -->
-            <div class="relative group shrink-0">
+            <div id="avatarCircleObstacle" class="relative group shrink-0">
                 <!-- Насыщенное красное свечение вокруг аватарки -->
                 <div class="absolute -inset-1.5 rounded-full bg-gradient-to-tr from-rose-600 via-red-500 to-rose-400 opacity-85 blur-md group-hover:opacity-100 transition duration-500"></div>
                 
@@ -320,7 +320,7 @@
             <!-- Правая перетаскиваемая паучья лилия -->
             <div 
                 id="lilyRight" 
-                title="Зажми ЛКМ, чтобы перетащить" 
+                title="Зажми ЛКМ, чтобы перетащить • Двойной клик — вернуть на место" 
                 class="draggable-lily relative z-20 ml-3 sm:ml-4 w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center"
             >
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="w-full h-full pointer-events-none transform rotate-12">
@@ -442,7 +442,7 @@
             </a>
 
             <!-- Разделитель и заголовок раздела "проекты:" -->
-            <div class="pt-3 pb-1 flex items-center gap-3">
+            <div id="projectsDivider" class="pt-3 pb-1 flex items-center gap-3">
                 <div class="h-px flex-1 bg-rose-300/60"></div>
                 <span class="font-display text-xs sm:text-sm font-bold tracking-wider text-rose-900/80 lowercase">
                     проекты:
@@ -473,7 +473,7 @@
         </div>
 
         <!-- Подвал карточки -->
-        <footer class="mt-7 pt-4 border-t border-rose-200/50 w-full flex items-center justify-center gap-2 text-xs text-rose-900/60 font-medium opacity-0 animate-fade-in-up delay-400">
+        <footer id="cardFooter" class="mt-7 pt-4 border-t border-rose-200/50 w-full flex items-center justify-center gap-2 text-xs text-rose-900/60 font-medium opacity-0 animate-fade-in-up delay-400">
             <span>© 2026 Vksun</span>
             <span>•</span>
             <button id="shareFooterBtn" type="button" class="hover:text-rose-800 underline decoration-rose-300 underline-offset-2 transition">
@@ -563,16 +563,189 @@
             // ==========================================
             // 2. Свободное перетаскивание паучьих лилий (ЛКМ / Touch)
             // ==========================================
+            // 2. Свободное перетаскивание паучьих лилий с коллизиями,
+            // физикой инерции и возвратом по двойному клику
+            // ==========================================
             const draggableLilies = [
                 document.getElementById('lilyLeft'),
                 document.getElementById('lilyRight')
             ].filter(Boolean);
 
+            const lilyStates = new Map();
+
+            // Получение локального прямоугольника элемента относительно tiltCard
+            function getLocalBox(el, cardRect) {
+                const r = el.getBoundingClientRect();
+                return {
+                    left: r.left - cardRect.left,
+                    top: r.top - cardRect.top,
+                    right: r.right - cardRect.left,
+                    bottom: r.bottom - cardRect.top,
+                    width: r.width,
+                    height: r.height
+                };
+            }
+
+            // Вычисление допустимой позиции с учетом границ карточки и всех внутренних препятствий
+            function resolveCollisions(lily, targetX, targetY) {
+                const cardRect = tiltCard.getBoundingClientRect();
+                const padding = 10; // Внутренний отступ от краев белой таблички
+
+                // Временно сбрасываем transform, чтобы узнать исходные координаты цветка в потоке
+                const prevTransform = lily.style.transform;
+                lily.style.transform = 'translate3d(0px, 0px, 0px)';
+                const baseBox = getLocalBox(lily, cardRect);
+                lily.style.transform = prevTransform;
+
+                let x = targetX;
+                let y = targetY;
+
+                // Ограничение по границам белой таблички
+                const minX = padding - baseBox.left;
+                const maxX = (cardRect.width - padding) - baseBox.right;
+                const minY = padding - baseBox.top;
+                const maxY = (cardRect.height - padding) - baseBox.bottom;
+
+                x = Math.max(minX, Math.min(maxX, x));
+                y = Math.max(minY, Math.min(maxY, y));
+
+                // Собираем все препятствия внутри карточки
+                const obstacleElements = [
+                    document.getElementById('avatarCircleObstacle'),
+                    document.getElementById('profileName'),
+                    document.getElementById('profileBio'),
+                    document.getElementById('projectsDivider'),
+                    document.getElementById('cardFooter'),
+                    ...document.querySelectorAll('#linksContainer a'),
+                    ...draggableLilies.filter(other => other !== lily)
+                ].filter(Boolean);
+
+                const obstacles = obstacleElements.map(el => {
+                    const box = getLocalBox(el, cardRect);
+                    return {
+                        left: box.left - 3,
+                        top: box.top - 3,
+                        right: box.right + 3,
+                        bottom: box.bottom + 3
+                    };
+                });
+
+                // Итеративно выталкиваем цветок из пересечений с препятствиями
+                for (let iter = 0; iter < 5; iter++) {
+                    let moved = false;
+                    const curLeft = baseBox.left + x;
+                    const curTop = baseBox.top + y;
+                    const curRight = baseBox.right + x;
+                    const curBottom = baseBox.bottom + y;
+
+                    for (const obs of obstacles) {
+                        const overlapX = Math.min(curRight, obs.right) - Math.max(curLeft, obs.left);
+                        const overlapY = Math.min(curBottom, obs.bottom) - Math.max(curTop, obs.top);
+
+                        if (overlapX > 0 && overlapY > 0) {
+                            moved = true;
+                            const lilyCenterX = (curLeft + curRight) / 2;
+                            const lilyCenterY = (curTop + curBottom) / 2;
+                            const obsCenterX = (obs.left + obs.right) / 2;
+                            const obsCenterY = (obs.top + obs.bottom) / 2;
+
+                            if (overlapX < overlapY) {
+                                x += lilyCenterX < obsCenterX ? -overlapX : overlapX;
+                            } else {
+                                y += lilyCenterY < obsCenterY ? -overlapY : overlapY;
+                            }
+
+                            // Повторно прижимаем к границам таблички
+                            x = Math.max(minX, Math.min(maxX, x));
+                            y = Math.max(minY, Math.min(maxY, y));
+                        }
+                    }
+                    if (!moved) break;
+                }
+
+                return { x, y };
+            }
+
             draggableLilies.forEach((lily) => {
-                let offsetX = 0;
-                let offsetY = 0;
-                let startPointerX = 0;
-                let startPointerY = 0;
+                lily.title = "Зажми ЛКМ, чтобы перетащить • Двойной клик — вернуть на место";
+
+                const state = {
+                    offsetX: 0,
+                    offsetY: 0,
+                    vx: 0,
+                    vy: 0,
+                    lastPointerX: 0,
+                    lastPointerY: 0,
+                    lastTime: 0,
+                    startPointerX: 0,
+                    startPointerY: 0,
+                    rafId: null
+                };
+                lilyStates.set(lily, state);
+
+                const applyTransform = (scale = 1, z = 0) => {
+                    lily.style.transform = `translate3d(${state.offsetX.toFixed(2)}px, ${state.offsetY.toFixed(2)}px, ${z}px) scale(${scale})`;
+                };
+
+                // Физический цикл инерции и отскока от стенок/препятствий после отпускания
+                const runInertia = () => {
+                    if (activeDragLily === lily) return;
+
+                    state.vx *= 0.88; // Трение
+                    state.vy *= 0.88;
+
+                    if (Math.abs(state.vx) < 0.15 && Math.abs(state.vy) < 0.15) {
+                        state.vx = 0;
+                        state.vy = 0;
+                        state.rafId = null;
+                        applyTransform(1, 0);
+                        return;
+                    }
+
+                    const nextX = state.offsetX + state.vx;
+                    const nextY = state.offsetY + state.vy;
+                    const resolved = resolveCollisions(lily, nextX, nextY);
+
+                    // Если произошло столкновение с границей или препятствием — гасим и слегка отскакиваем
+                    if (Math.abs(resolved.x - nextX) > 0.5) {
+                        state.vx = -state.vx * 0.45;
+                    }
+                    if (Math.abs(resolved.y - nextY) > 0.5) {
+                        state.vy = -state.vy * 0.45;
+                    }
+
+                    state.offsetX = resolved.x;
+                    state.offsetY = resolved.y;
+                    applyTransform(1, 0);
+
+                    state.rafId = requestAnimationFrame(runInertia);
+                };
+
+                // Плавный возврат в исходное положение
+                const resetPosition = () => {
+                    if (state.rafId) {
+                        cancelAnimationFrame(state.rafId);
+                        state.rafId = null;
+                    }
+                    state.vx = 0;
+                    state.vy = 0;
+                    state.offsetX = 0;
+                    state.offsetY = 0;
+                    lily.style.transition = 'transform 0.55s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.2s ease';
+                    applyTransform(1, 0);
+                    setTimeout(() => {
+                        if (activeDragLily !== lily) {
+                            lily.style.transition = 'filter 0.2s ease';
+                        }
+                    }, 560);
+                };
+
+                // Двойной клик ЛКМ для возврата в исходную точку
+                lily.addEventListener('dblclick', (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    resetPosition();
+                });
 
                 const onPointerDown = (e) => {
                     // Реагируем только на левую кнопку мыши (button === 0) или сенсорное нажатие
@@ -581,10 +754,16 @@
                     e.preventDefault();
                     e.stopPropagation();
 
+                    if (state.rafId) {
+                        cancelAnimationFrame(state.rafId);
+                        state.rafId = null;
+                    }
+
                     activeDragLily = lily;
+                    lily.style.transition = 'filter 0.2s ease';
                     lily.classList.add('is-dragging');
 
-                    // Выравниваем карточку при начале перетаскивания, чтобы не сбивались координаты
+                    // Выравниваем карточку при начале перетаскивания для точного расчета коллизий
                     if (tiltCard) {
                         tiltCard.style.transition = 'transform 0.25s ease-out';
                         tiltCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
@@ -593,8 +772,13 @@
                     const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
                     const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
 
-                    startPointerX = clientX - offsetX;
-                    startPointerY = clientY - offsetY;
+                    state.startPointerX = clientX - state.offsetX;
+                    state.startPointerY = clientY - state.offsetY;
+                    state.lastPointerX = clientX;
+                    state.lastPointerY = clientY;
+                    state.lastTime = performance.now();
+                    state.vx = 0;
+                    state.vy = 0;
 
                     window.addEventListener('mousemove', onPointerMove);
                     window.addEventListener('mouseup', onPointerUp);
@@ -608,24 +792,46 @@
 
                     const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
                     const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
+                    const now = performance.now();
+                    const dt = Math.max(8, now - state.lastTime);
 
-                    offsetX = clientX - startPointerX;
-                    offsetY = clientY - startPointerY;
+                    const rawX = clientX - state.startPointerX;
+                    const rawY = clientY - state.startPointerY;
+                    const resolved = resolveCollisions(lily, rawX, rawY);
 
-                    lily.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 30px) scale(1.1)`;
+                    // Вычисляем импульс скорости для легкой физики при отпускании
+                    state.vx = ((clientX - state.lastPointerX) / dt) * 14;
+                    state.vy = ((clientY - state.lastPointerY) / dt) * 14;
+                    state.lastPointerX = clientX;
+                    state.lastPointerY = clientY;
+                    state.lastTime = now;
+
+                    state.offsetX = resolved.x;
+                    state.offsetY = resolved.y;
+
+                    applyTransform(1.08, 30);
                 };
 
                 const onPointerUp = () => {
                     if (activeDragLily !== lily) return;
 
                     lily.classList.remove('is-dragging');
-                    lily.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0px) scale(1)`;
                     activeDragLily = null;
 
                     window.removeEventListener('mousemove', onPointerMove);
                     window.removeEventListener('mouseup', onPointerUp);
                     window.removeEventListener('touchmove', onPointerMove);
                     window.removeEventListener('touchend', onPointerUp);
+
+                    // Ограничиваем максимальную скорость броска и запускаем инерцию
+                    state.vx = Math.max(-18, Math.min(18, state.vx));
+                    state.vy = Math.max(-18, Math.min(18, state.vy));
+
+                    if (Math.abs(state.vx) > 0.6 || Math.abs(state.vy) > 0.6) {
+                        state.rafId = requestAnimationFrame(runInertia);
+                    } else {
+                        applyTransform(1, 0);
+                    }
                 };
 
                 lily.addEventListener('mousedown', onPointerDown);
