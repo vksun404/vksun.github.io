@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vksun — Мои ссылки</title>
+    <!-- Подключаем Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключаем шрифты Inter и Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        softred: {
+                            50: '#fff1f2',
+                            100: '#ffe4e6',
+                            200: '#fecdd3',
+                            300: '#fda4af',
+                            400: '#fb7185',
+                            500: '#f43f5e',
+                            600: '#e11d48',
+                            700: '#be123c',
+                            800: '#9f1239',
+                            900: '#881337',
+                        }
+                    },
+                    animation: {
+                        'gradient-xy': 'gradient-xy 14s ease infinite',
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in-up': 'fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+                    },
+                    keyframes: {
+                        'gradient-xy': {
+                            '0%, 100%': {
+                                'background-size': '300% 300%',
+                                'background-position': '0% 50%'
+                            },
+                            '50%': {
+                                'background-size': '300% 300%',
+                                'background-position': '100% 50%'
+                            }
+                        },
+                        'float': {
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'fadeInUp': {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        /* Плавный насыщенный градиентный фон в красных и кораллово-малиновых оттенках */
+        .soft-red-gradient {
+            background: linear-gradient(135deg, #ffa4b4 0%, #fb6882 35%, #f43f5e 70%, #e11d48 100%);
+            background-size: 300% 300%;
+        }
+
+        /* Эффект матового стекла (Glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.78);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 
+                0 25px 50px -12px rgba(159, 18, 57, 0.28),
+                0 0 0 1px rgba(255, 255, 255, 0.45) inset;
+        }
+
+        /* Эффект матового стекла (Glassmorphism) */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(22px);
+            -webkit-backdrop-filter: blur(22px);
+            border: 1px solid rgba(255, 255, 255, 0.65);
+            box-shadow: 
+                0 25px 50px -12px rgba(159, 18, 57, 0.18),
+                0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+        }
+
+        /* Задержки для анимации последовательного появления */
+        .delay-100 { animation-delay: 100ms; }
+        .delay-200 { animation-delay: 200ms; }
+        .delay-300 { animation-delay: 300ms; }
+        .delay-400 { animation-delay: 400ms; }
+        .delay-500 { animation-delay: 500ms; }
+    </style>
+</head>
+<body class="soft-red-gradient animate-gradient-xy min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-x-hidden text-rose-950 selection:bg-rose-400 selection:text-white">
+
+    <!-- Декоративные размытые блики на фоне для глубины -->
+    <div class="pointer-events-none fixed inset-0 overflow-hidden z-0">
+        <div class="absolute -top-24 -left-24 w-80 h-80 sm:w-96 sm:h-96 bg-rose-300/65 rounded-full blur-3xl animate-float"></div>
+        <div class="absolute bottom-10 -right-20 w-72 h-72 sm:w-96 sm:h-96 bg-red-600/40 rounded-full blur-3xl animate-float" style="animation-delay: 2.5s;"></div>
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[34rem] bg-rose-200/35 rounded-full blur-3xl"></div>
+    </div>
+
+    <!-- Главная карточка-контейнер -->
+    <main class="glass-card relative z-10 w-full max-w-[430px] rounded-[34px] p-7 sm:p-9 flex flex-col items-center text-center opacity-0 animate-fade-in-up">
+
+        <!-- Блок аватарки -->
+        <div class="relative group mb-5 opacity-0 animate-fade-in-up delay-100">
+            <!-- Насыщенное красное свечение вокруг аватарки -->
+            <div class="absolute -inset-1.5 rounded-full bg-gradient-to-tr from-rose-600 via-red-500 to-rose-400 opacity-85 blur-md group-hover:opacity-100 transition duration-500"></div>
+            
+            <div class="relative block w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-white/95 shadow-lg overflow-hidden transition-transform duration-300 group-hover:scale-[1.03]">
+                <!-- Основное изображение 11024_2.jpg с резервным сердечком -->
+                <img 
+                    id="avatarImage" 
+                    src="11024_2.jpg" 
+                    alt="Аватарка Vksun" 
+                    onerror="this.style.display='none'; document.getElementById('avatarFallbackHeart').classList.remove('hidden');"
+                    class="w-full h-full object-cover rounded-full bg-rose-200"
+                >
+                <!-- Заглушка с анатомическим сердцем в кружке -->
+                <div id="avatarFallbackHeart" class="hidden w-full h-full rounded-full bg-gradient-to-br from-rose-500 via-red-600 to-rose-800 flex items-center justify-center text-white p-2">
+                    <svg class="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-md animate-pulse" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                        <!-- Верхняя полая вена -->
+                        <path d="M36 14 L36 33 L44 33 L44 14 Z" fill="#fecdd3" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                        <!-- Дуга аорты и брахиоцефальные ветви -->
+                        <path d="M44 34 C44 16, 65 14, 67 31 L67 38 L59 38 L59 31 C59 24, 51 24, 51 34 Z" fill="#fda4af" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M49 18 L49 11 M55 17 L56 10 M61 19 L64 13" stroke="#fda4af" stroke-width="3.5" stroke-linecap="round"/>
+                        <path d="M49 18 L49 11 M55 17 L56 10 M61 19 L64 13" stroke="#881337" stroke-width="1.3" stroke-linecap="round"/>
+                        <!-- Легочный ствол (раздвоение) -->
+                        <path d="M47 42 C46 31, 56 26, 74 27 L74 34 C62 34, 56 36, 55 44 Z" fill="#ffe4e6" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M48 33 C42 29, 34 29, 28 31 L29 36 C35 35, 41 35, 46 38 Z" fill="#ffe4e6" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                        <!-- Правое и левое предсердия (ушки) -->
+                        <path d="M34 33 C25 35, 22 44, 28 51 C33 48, 37 42, 39 36 Z" fill="#fb7185" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M64 36 C72 37, 75 44, 70 50 C66 47, 63 43, 62 39 Z" fill="#fb7185" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                        <!-- Основное тело желудочков (миокард) -->
+                        <path d="M28 49 C23 62, 33 83, 55 88 C67 90, 76 80, 75 63 C74 51, 69 44, 63 41 C54 43, 44 43, 36 39 C32 42, 30 45, 28 49 Z" fill="#fff1f2" stroke="#881337" stroke-width="2.2" stroke-linejoin="round"/>
+                        <!-- Коронарные артерии и вены на поверхности -->
+                        <path d="M48 44 C49 56, 52 69, 57 83" fill="none" stroke="#e11d48" stroke-width="2.2" stroke-linecap="round"/>
+                        <path d="M50 56 C43 60, 38 66, 35 72" fill="none" stroke="#e11d48" stroke-width="1.6" stroke-linecap="round"/>
+                        <path d="M52 63 C59 66, 65 71, 68 77" fill="none" stroke="#e11d48" stroke-width="1.6" stroke-linecap="round"/>
+                        <path d="M44 44 C42 54, 41 64, 44 76" fill="none" stroke="#be123c" stroke-width="1.3" stroke-linecap="round" opacity="0.75"/>
+                        <!-- Блик для объема -->
+                        <path d="M65 50 C68 56, 69 63, 67 69" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+                    </svg>
+                </div>
+            </div>
+        </div>
+
+        <!-- Имя / Никнейм и описание -->
+        <div class="mb-7 opacity-0 animate-fade-in-up delay-200 w-full">
+            <h1 id="profileName" class="font-display text-2xl sm:text-[28px] font-extrabold tracking-tight text-rose-950 flex items-center justify-center gap-2">
+                <span>Vksun</span>
+                <!-- Иконка красной паучьей лилии (Lycoris radiata) -->
+                <span class="inline-flex items-center justify-center w-7 h-7 text-rose-600 drop-shadow-sm transition-transform duration-300 hover:scale-110 hover:rotate-12" title="Паучья лилия">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" class="w-full h-full">
+                        <!-- Стебель -->
+                        <path d="M32 60 Q31 46 32 34" stroke="#881337" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                        <!-- Изогнутые алые лепестки паучьей лилии -->
+                        <g stroke="#e11d48" stroke-width="2.4" stroke-linecap="round" fill="none">
+                            <path d="M32 35 C20 33 10 40 7 49 C12 46 17 44 22 46"/>
+                            <path d="M32 35 C44 33 54 40 57 49 C52 46 47 44 42 46"/>
+                            <path d="M32 34 C16 28 8 31 4 38 C9 36 14 36 18 39"/>
+                            <path d="M32 34 C48 28 56 31 60 38 C55 36 50 36 46 39"/>
+                            <path d="M32 33 C22 23 14 22 9 27 C14 26 18 27 21 30"/>
+                            <path d="M32 33 C42 23 50 22 55 27 C50 26 46 27 43 30"/>
+                        </g>
+                        <!-- Длинные изогнутые тычинки -->
+                        <g stroke="#be123c" stroke-width="1.4" stroke-linecap="round" fill="none">
+                            <path d="M32 33 C25 20 17 12 10 11"/>
+                            <path d="M32 33 C28 18 23 9 18 6"/>
+                            <path d="M32 33 C32 17 32 8 32 4"/>
+                            <path d="M32 33 C36 18 41 9 46 6"/>
+                            <path d="M32 33 C39 20 47 12 54 11"/>
+                        </g>
+                        <!-- Пыльники на кончиках тычинок -->
+                        <g fill="#fda4af" stroke="#be123c" stroke-width="0.8">
+                            <circle cx="10" cy="11" r="1.5"/>
+                            <circle cx="18" cy="6" r="1.5"/>
+                            <circle cx="32" cy="4" r="1.5"/>
+                            <circle cx="46" cy="6" r="1.5"/>
+                            <circle cx="54" cy="11" r="1.5"/>
+                        </g>
+                    </svg>
+                </span>
+            </h1>
+            <p id="profileBio" class="mt-2 text-sm sm:text-[15px] text-rose-900/85 font-medium leading-relaxed max-w-xs mx-auto">
+                Добро пожаловать на мою страницу! Подписывайся на соцсети и следи за обновлениями ✨
+            </p>
+        </div>
+
+        <!-- Список кнопок со ссылками -->
+        <div id="linksContainer" class="w-full flex flex-col gap-3.5 opacity-0 animate-fade-in-up delay-300">
+            
+            <!-- Кнопка 1: Telegram Channel -->
+            <a 
+                href="https://t.me/VksunChannel" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="group relative w-full flex items-center justify-between px-5 py-4 rounded-full bg-gradient-to-r from-rose-600 to-red-600 text-white font-semibold text-[15px] sm:text-base shadow-lg shadow-rose-600/35 hover:shadow-xl hover:shadow-rose-600/50 hover:from-rose-700 hover:to-red-700 transform hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
+                <span class="flex items-center justify-center w-9 h-9 rounded-full bg-white/20 backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                    <!-- Иконка Telegram -->
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                    </svg>
+                </span>
+                <span class="tracking-wide">Telegram Channel</span>
+                <span class="w-9 h-9 flex items-center justify-center opacity-80 group-hover:opacity-100 group-hover:translate-x-1 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Кнопка 2: TikTok -->
+            <a 
+                href="https://www.tiktok.com/@vksun404" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="group relative w-full flex items-center justify-between px-5 py-4 rounded-full bg-white/90 hover:bg-white text-rose-950 font-semibold text-[15px] sm:text-base border border-rose-300 shadow-md shadow-rose-900/10 hover:shadow-lg hover:shadow-rose-600/25 transform hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
+                <span class="flex items-center justify-center w-9 h-9 rounded-full bg-rose-100 text-rose-600 group-hover:bg-rose-600 group-hover:text-white transition-colors duration-300">
+                    <!-- Иконка TikTok -->
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.84 6.84 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
+                    </svg>
+                </span>
+                <span class="tracking-wide">TikTok</span>
+                <span class="w-9 h-9 flex items-center justify-center text-rose-500 group-hover:text-rose-700 group-hover:translate-x-1 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </span>
+            </a>
+
+        </div>
+
+        <!-- Подвал карточки -->
+        <footer class="mt-7 pt-4 border-t border-rose-200/50 w-full flex items-center justify-center gap-2 text-xs text-rose-900/60 font-medium opacity-0 animate-fade-in-up delay-400">
+            <span>© 2026 Vksun</span>
+            <span>•</span>
+            <button id="shareFooterBtn" type="button" class="hover:text-rose-800 underline decoration-rose-300 underline-offset-2 transition">
+                Поделиться визиткой
+            </button>
+        </footer>
+    </main>
+
+    <!-- Всплывающее уведомление (Toast) -->
+    <div id="toastNotification" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 px-5 py-3 rounded-full bg-rose-950/90 text-white text-xs sm:text-sm font-medium shadow-xl backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300 transform translate-y-3">
+        Готово!
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const shareFooterBtn = document.getElementById('shareFooterBtn');
+            const toast = document.getElementById('toastNotification');
+            let toastTimeout;
+
+            // Функция показа аккуратного уведомления при копировании ссылки
+            function showToast(message) {
+                toast.textContent = message;
+                toast.classList.remove('opacity-0', 'translate-y-3');
+                toast.classList.add('opacity-100', 'translate-y-0');
+                
+                clearTimeout(toastTimeout);
+                toastTimeout = setTimeout(() => {
+                    toast.classList.remove('opacity-100', 'translate-y-0');
+                    toast.classList.add('opacity-0', 'translate-y-3');
+                }, 2600);
+            }
+
+            // Копирование ссылки на страницу
+            function copyPageUrl() {
+                const urlToCopy = window.location.href;
+                const tempInput = document.createElement('input');
+                tempInput.value = urlToCopy;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                try {
+                    document.execCommand('copy');
+                    showToast('Ссылка на визитку скопирована 📋');
+                } catch (err) {
+                    showToast('Не удалось скопировать ссылку');
+                }
+                document.body.removeChild(tempInput);
+            }
+
+            shareFooterBtn.addEventListener('click', copyPageUrl);
+        });
+    </script>
+</body>
+</html>
+```
