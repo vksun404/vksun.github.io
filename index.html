@@ -84,6 +84,29 @@
             box-shadow: 
                 0 25px 50px -12px rgba(159, 18, 57, 0.22),
                 0 0 0 1px rgba(255, 255, 255, 0.42) inset;
+            transform-style: preserve-3d;
+            will-change: transform;
+        }
+
+        /* Курсоры и стили для перетаскиваемых паучьих лилий */
+        .draggable-lily {
+            cursor: grab;
+            touch-action: none;
+            user-select: none;
+            -webkit-user-select: none;
+            will-change: transform;
+            transition: filter 0.2s ease, transform 0.15s ease;
+        }
+
+        .draggable-lily:hover {
+            filter: drop-shadow(0 8px 14px rgba(190, 18, 60, 0.35));
+        }
+
+        .draggable-lily.is-dragging {
+            cursor: grabbing !important;
+            z-index: 60 !important;
+            transition: filter 0.2s ease;
+            filter: drop-shadow(0 14px 20px rgba(159, 18, 57, 0.45));
         }
 
         /* Задержки для анимации последовательного появления */
@@ -209,49 +232,128 @@
     </div>
 
     <!-- Главная карточка-контейнер -->
-    <main class="glass-card relative z-10 w-full max-w-[430px] rounded-[34px] p-7 sm:p-9 flex flex-col items-center text-center opacity-0 animate-fade-in-up">
+    <main id="tiltCard" class="glass-card relative z-10 w-full max-w-[430px] rounded-[34px] p-7 sm:p-9 flex flex-col items-center text-center opacity-0 animate-fade-in-up">
 
-        <!-- Блок аватарки -->
-        <div class="relative group mb-5 opacity-0 animate-fade-in-up delay-100">
-            <!-- Насыщенное красное свечение вокруг аватарки -->
-            <div class="absolute -inset-1.5 rounded-full bg-gradient-to-tr from-rose-600 via-red-500 to-rose-400 opacity-85 blur-md group-hover:opacity-100 transition duration-500"></div>
+        <!-- Блок аватарки с двумя перетаскиваемыми паучьими лилиями по бокам -->
+        <div class="relative flex items-center justify-center w-full mb-5 opacity-0 animate-fade-in-up delay-100">
             
-            <div class="relative block w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-white/95 shadow-lg overflow-hidden transition-transform duration-300 group-hover:scale-[1.03]">
-                <!-- Основное изображение 11024_2.jpg с резервным сердечком -->
-                <img 
-                    id="avatarImage" 
-                    src="11024_2.jpg" 
-                    alt="Аватарка Vksun" 
-                    onerror="this.style.display='none'; document.getElementById('avatarFallbackHeart').classList.remove('hidden');"
-                    class="w-full h-full object-cover rounded-full bg-rose-200"
-                >
-                <!-- Заглушка с анатомическим сердцем в кружке -->
-                <div id="avatarFallbackHeart" class="hidden w-full h-full rounded-full bg-gradient-to-br from-rose-500 via-red-600 to-rose-800 flex items-center justify-center text-white p-2">
-                    <svg class="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-md animate-pulse" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
-                        <!-- Верхняя полая вена -->
-                        <path d="M36 14 L36 33 L44 33 L44 14 Z" fill="#fecdd3" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
-                        <!-- Дуга аорты и брахиоцефальные ветви -->
-                        <path d="M44 34 C44 16, 65 14, 67 31 L67 38 L59 38 L59 31 C59 24, 51 24, 51 34 Z" fill="#fda4af" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
-                        <path d="M49 18 L49 11 M55 17 L56 10 M61 19 L64 13" stroke="#fda4af" stroke-width="3.5" stroke-linecap="round"/>
-                        <path d="M49 18 L49 11 M55 17 L56 10 M61 19 L64 13" stroke="#881337" stroke-width="1.3" stroke-linecap="round"/>
-                        <!-- Легочный ствол (раздвоение) -->
-                        <path d="M47 42 C46 31, 56 26, 74 27 L74 34 C62 34, 56 36, 55 44 Z" fill="#ffe4e6" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
-                        <path d="M48 33 C42 29, 34 29, 28 31 L29 36 C35 35, 41 35, 46 38 Z" fill="#ffe4e6" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
-                        <!-- Правое и левое предсердия (ушки) -->
-                        <path d="M34 33 C25 35, 22 44, 28 51 C33 48, 37 42, 39 36 Z" fill="#fb7185" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
-                        <path d="M64 36 C72 37, 75 44, 70 50 C66 47, 63 43, 62 39 Z" fill="#fb7185" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
-                        <!-- Основное тело желудочков (миокард) -->
-                        <path d="M28 49 C23 62, 33 83, 55 88 C67 90, 76 80, 75 63 C74 51, 69 44, 63 41 C54 43, 44 43, 36 39 C32 42, 30 45, 28 49 Z" fill="#fff1f2" stroke="#881337" stroke-width="2.2" stroke-linejoin="round"/>
-                        <!-- Коронарные артерии и вены на поверхности -->
-                        <path d="M48 44 C49 56, 52 69, 57 83" fill="none" stroke="#e11d48" stroke-width="2.2" stroke-linecap="round"/>
-                        <path d="M50 56 C43 60, 38 66, 35 72" fill="none" stroke="#e11d48" stroke-width="1.6" stroke-linecap="round"/>
-                        <path d="M52 63 C59 66, 65 71, 68 77" fill="none" stroke="#e11d48" stroke-width="1.6" stroke-linecap="round"/>
-                        <path d="M44 44 C42 54, 41 64, 44 76" fill="none" stroke="#be123c" stroke-width="1.3" stroke-linecap="round" opacity="0.75"/>
-                        <!-- Блик для объема -->
-                        <path d="M65 50 C68 56, 69 63, 67 69" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
-                    </svg>
+            <!-- Левая перетаскиваемая паучья лилия -->
+            <div 
+                id="lilyLeft" 
+                title="Зажми ЛКМ, чтобы перетащить" 
+                class="draggable-lily relative z-20 mr-3 sm:mr-4 w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="w-full h-full pointer-events-none transform -rotate-12">
+                    <!-- Стебель -->
+                    <path d="M62 114 Q57 86 60 62" stroke="#881337" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    <!-- Изогнутые алые лепестки -->
+                    <g stroke="#e11d48" stroke-width="3.2" stroke-linecap="round" fill="none">
+                        <path d="M60 64 C36 60 18 74 12 92 C22 86 32 82 42 86"/>
+                        <path d="M60 64 C84 60 102 74 108 92 C98 86 88 82 78 86"/>
+                        <path d="M60 62 C30 50 14 56 6 70 C16 66 26 66 34 72"/>
+                        <path d="M60 62 C90 50 106 56 114 70 C104 66 94 66 86 72"/>
+                        <path d="M60 60 C40 40 24 38 14 48 C24 46 32 48 38 54"/>
+                        <path d="M60 60 C80 40 96 38 106 48 C96 46 88 48 82 54"/>
+                    </g>
+                    <!-- Длинные тычинки -->
+                    <g stroke="#be123c" stroke-width="1.8" stroke-linecap="round" fill="none">
+                        <path d="M60 60 C46 36 30 22 16 20"/>
+                        <path d="M60 60 C52 32 42 16 32 10"/>
+                        <path d="M60 60 C60 30 60 14 60 6"/>
+                        <path d="M60 60 C68 32 78 16 88 10"/>
+                        <path d="M60 60 C74 36 90 22 104 20"/>
+                    </g>
+                    <!-- Пыльники -->
+                    <g fill="#ffe4e6" stroke="#be123c" stroke-width="1">
+                        <circle cx="16" cy="20" r="2.4"/>
+                        <circle cx="32" cy="10" r="2.4"/>
+                        <circle cx="60" cy="6" r="2.4"/>
+                        <circle cx="88" cy="10" r="2.4"/>
+                        <circle cx="104" cy="20" r="2.4"/>
+                    </g>
+                </svg>
+            </div>
+
+            <!-- Центральный кружок аватарки -->
+            <div class="relative group shrink-0">
+                <!-- Насыщенное красное свечение вокруг аватарки -->
+                <div class="absolute -inset-1.5 rounded-full bg-gradient-to-tr from-rose-600 via-red-500 to-rose-400 opacity-85 blur-md group-hover:opacity-100 transition duration-500"></div>
+                
+                <div class="relative block w-28 h-28 sm:w-32 sm:h-32 rounded-full p-1 bg-white/95 shadow-lg overflow-hidden transition-transform duration-300 group-hover:scale-[1.03]">
+                    <!-- Основное изображение 11024_2.jpg с резервным сердечком -->
+                    <img 
+                        id="avatarImage" 
+                        src="11024_2.jpg" 
+                        alt="Аватарка Vksun" 
+                        onerror="this.style.display='none'; document.getElementById('avatarFallbackHeart').classList.remove('hidden');"
+                        class="w-full h-full object-cover rounded-full bg-rose-200"
+                    >
+                    <!-- Заглушка с анатомическим сердцем в кружке -->
+                    <div id="avatarFallbackHeart" class="hidden w-full h-full rounded-full bg-gradient-to-br from-rose-500 via-red-600 to-rose-800 flex items-center justify-center text-white p-2">
+                        <svg class="w-16 h-16 sm:w-20 sm:h-20 drop-shadow-md animate-pulse" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Верхняя полая вена -->
+                            <path d="M36 14 L36 33 L44 33 L44 14 Z" fill="#fecdd3" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                            <!-- Дуга аорты и брахиоцефальные ветви -->
+                            <path d="M44 34 C44 16, 65 14, 67 31 L67 38 L59 38 L59 31 C59 24, 51 24, 51 34 Z" fill="#fda4af" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M49 18 L49 11 M55 17 L56 10 M61 19 L64 13" stroke="#fda4af" stroke-width="3.5" stroke-linecap="round"/>
+                            <path d="M49 18 L49 11 M55 17 L56 10 M61 19 L64 13" stroke="#881337" stroke-width="1.3" stroke-linecap="round"/>
+                            <!-- Легочный ствол (раздвоение) -->
+                            <path d="M47 42 C46 31, 56 26, 74 27 L74 34 C62 34, 56 36, 55 44 Z" fill="#ffe4e6" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M48 33 C42 29, 34 29, 28 31 L29 36 C35 35, 41 35, 46 38 Z" fill="#ffe4e6" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                            <!-- Правое и левое предсердия (ушки) -->
+                            <path d="M34 33 C25 35, 22 44, 28 51 C33 48, 37 42, 39 36 Z" fill="#fb7185" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                            <path d="M64 36 C72 37, 75 44, 70 50 C66 47, 63 43, 62 39 Z" fill="#fb7185" stroke="#881337" stroke-width="2" stroke-linejoin="round"/>
+                            <!-- Основное тело желудочков (миокард) -->
+                            <path d="M28 49 C23 62, 33 83, 55 88 C67 90, 76 80, 75 63 C74 51, 69 44, 63 41 C54 43, 44 43, 36 39 C32 42, 30 45, 28 49 Z" fill="#fff1f2" stroke="#881337" stroke-width="2.2" stroke-linejoin="round"/>
+                            <!-- Коронарные артерии и вены на поверхности -->
+                            <path d="M48 44 C49 56, 52 69, 57 83" fill="none" stroke="#e11d48" stroke-width="2.2" stroke-linecap="round"/>
+                            <path d="M50 56 C43 60, 38 66, 35 72" fill="none" stroke="#e11d48" stroke-width="1.6" stroke-linecap="round"/>
+                            <path d="M52 63 C59 66, 65 71, 68 77" fill="none" stroke="#e11d48" stroke-width="1.6" stroke-linecap="round"/>
+                            <path d="M44 44 C42 54, 41 64, 44 76" fill="none" stroke="#be123c" stroke-width="1.3" stroke-linecap="round" opacity="0.75"/>
+                            <!-- Блик для объема -->
+                            <path d="M65 50 C68 56, 69 63, 67 69" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" opacity="0.85"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
+
+            <!-- Правая перетаскиваемая паучья лилия -->
+            <div 
+                id="lilyRight" 
+                title="Зажми ЛКМ, чтобы перетащить" 
+                class="draggable-lily relative z-20 ml-3 sm:ml-4 w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center"
+            >
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="w-full h-full pointer-events-none transform rotate-12">
+                    <!-- Стебель -->
+                    <path d="M58 114 Q63 86 60 62" stroke="#881337" stroke-width="3" stroke-linecap="round" fill="none"/>
+                    <!-- Изогнутые алые лепестки -->
+                    <g stroke="#e11d48" stroke-width="3.2" stroke-linecap="round" fill="none">
+                        <path d="M60 64 C36 60 18 74 12 92 C22 86 32 82 42 86"/>
+                        <path d="M60 64 C84 60 102 74 108 92 C98 86 88 82 78 86"/>
+                        <path d="M60 62 C30 50 14 56 6 70 C16 66 26 66 34 72"/>
+                        <path d="M60 62 C90 50 106 56 114 70 C104 66 94 66 86 72"/>
+                        <path d="M60 60 C40 40 24 38 14 48 C24 46 32 48 38 54"/>
+                        <path d="M60 60 C80 40 96 38 106 48 C96 46 88 48 82 54"/>
+                    </g>
+                    <!-- Длинные тычинки -->
+                    <g stroke="#be123c" stroke-width="1.8" stroke-linecap="round" fill="none">
+                        <path d="M60 60 C46 36 30 22 16 20"/>
+                        <path d="M60 60 C52 32 42 16 32 10"/>
+                        <path d="M60 60 C60 30 60 14 60 6"/>
+                        <path d="M60 60 C68 32 78 16 88 10"/>
+                        <path d="M60 60 C74 36 90 22 104 20"/>
+                    </g>
+                    <!-- Пыльники -->
+                    <g fill="#ffe4e6" stroke="#be123c" stroke-width="1">
+                        <circle cx="16" cy="20" r="2.4"/>
+                        <circle cx="32" cy="10" r="2.4"/>
+                        <circle cx="60" cy="6" r="2.4"/>
+                        <circle cx="88" cy="10" r="2.4"/>
+                        <circle cx="104" cy="20" r="2.4"/>
+                    </g>
+                </svg>
+            </div>
+
         </div>
 
         <!-- Имя / Никнейм и описание -->
@@ -421,6 +523,114 @@
             }
 
             shareFooterBtn.addEventListener('click', copyPageUrl);
+
+            // ==========================================
+            // 1. 3D-наклон (Tilt) панели на ПК при наведении
+            // ==========================================
+            const tiltCard = document.getElementById('tiltCard');
+            const isDesktopPointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+            let activeDragLily = null;
+
+            if (tiltCard && isDesktopPointer.matches) {
+                const maxTilt = 7; // Максимальный угол наклона в градусах
+
+                tiltCard.addEventListener('mousemove', (e) => {
+                    // Не наклоняем панель во время перетаскивания лилии для точности
+                    if (activeDragLily) return;
+
+                    const rect = tiltCard.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+
+                    // Нормализуем координаты от -1 до 1 относительно центра карточки
+                    const normX = (x - rect.width / 2) / (rect.width / 2);
+                    const normY = (y - rect.height / 2) / (rect.height / 2);
+
+                    // Наклоняем панель в сторону положения курсора
+                    const rotateX = (-normY * maxTilt).toFixed(2);
+                    const rotateY = (normX * maxTilt).toFixed(2);
+
+                    tiltCard.style.transition = 'transform 0.12s cubic-bezier(0.22, 1, 0.36, 1)';
+                    tiltCard.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                });
+
+                tiltCard.addEventListener('mouseleave', () => {
+                    tiltCard.style.transition = 'transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)';
+                    tiltCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+                });
+            }
+
+            // ==========================================
+            // 2. Свободное перетаскивание паучьих лилий (ЛКМ / Touch)
+            // ==========================================
+            const draggableLilies = [
+                document.getElementById('lilyLeft'),
+                document.getElementById('lilyRight')
+            ].filter(Boolean);
+
+            draggableLilies.forEach((lily) => {
+                let offsetX = 0;
+                let offsetY = 0;
+                let startPointerX = 0;
+                let startPointerY = 0;
+
+                const onPointerDown = (e) => {
+                    // Реагируем только на левую кнопку мыши (button === 0) или сенсорное нажатие
+                    if (e.type === 'mousedown' && e.button !== 0) return;
+
+                    e.preventDefault();
+                    e.stopPropagation();
+
+                    activeDragLily = lily;
+                    lily.classList.add('is-dragging');
+
+                    // Выравниваем карточку при начале перетаскивания, чтобы не сбивались координаты
+                    if (tiltCard) {
+                        tiltCard.style.transition = 'transform 0.25s ease-out';
+                        tiltCard.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg)';
+                    }
+
+                    const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
+
+                    startPointerX = clientX - offsetX;
+                    startPointerY = clientY - offsetY;
+
+                    window.addEventListener('mousemove', onPointerMove);
+                    window.addEventListener('mouseup', onPointerUp);
+                    window.addEventListener('touchmove', onPointerMove, { passive: false });
+                    window.addEventListener('touchend', onPointerUp);
+                };
+
+                const onPointerMove = (e) => {
+                    if (activeDragLily !== lily) return;
+                    if (e.cancelable) e.preventDefault();
+
+                    const clientX = e.type.startsWith('touch') ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.type.startsWith('touch') ? e.touches[0].clientY : e.clientY;
+
+                    offsetX = clientX - startPointerX;
+                    offsetY = clientY - startPointerY;
+
+                    lily.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 30px) scale(1.1)`;
+                };
+
+                const onPointerUp = () => {
+                    if (activeDragLily !== lily) return;
+
+                    lily.classList.remove('is-dragging');
+                    lily.style.transform = `translate3d(${offsetX}px, ${offsetY}px, 0px) scale(1)`;
+                    activeDragLily = null;
+
+                    window.removeEventListener('mousemove', onPointerMove);
+                    window.removeEventListener('mouseup', onPointerUp);
+                    window.removeEventListener('touchmove', onPointerMove);
+                    window.removeEventListener('touchend', onPointerUp);
+                };
+
+                lily.addEventListener('mousedown', onPointerDown);
+                lily.addEventListener('touchstart', onPointerDown, { passive: false });
+            });
         });
     </script>
 </body>
