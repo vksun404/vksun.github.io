@@ -36,6 +36,7 @@
                     animation: {
                         'gradient-xy': 'gradient-xy 14s ease infinite',
                         'float': 'float 6s ease-in-out infinite',
+                        'sway-slow': 'sway 9s ease-in-out infinite',
                         'fade-in-up': 'fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards',
                     },
                     keyframes: {
@@ -52,6 +53,10 @@
                         'float': {
                             '0%, 100%': { transform: 'translateY(0px)' },
                             '50%': { transform: 'translateY(-10px)' },
+                        },
+                        'sway': {
+                            '0%, 100%': { transform: 'rotate(-3deg) translateY(0px)' },
+                            '50%': { transform: 'rotate(4deg) translateY(-8px)' },
                         },
                         'fadeInUp': {
                             '0%': { opacity: '0', transform: 'translateY(20px)' },
@@ -72,24 +77,13 @@
 
         /* Эффект матового стекла (Glassmorphism) */
         .glass-card {
-            background: rgba(255, 255, 255, 0.78);
+            background: rgba(255, 255, 255, 0.74);
             backdrop-filter: blur(22px);
             -webkit-backdrop-filter: blur(22px);
-            border: 1px solid rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.68);
             box-shadow: 
-                0 25px 50px -12px rgba(159, 18, 57, 0.28),
-                0 0 0 1px rgba(255, 255, 255, 0.45) inset;
-        }
-
-        /* Эффект матового стекла (Glassmorphism) */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(22px);
-            -webkit-backdrop-filter: blur(22px);
-            border: 1px solid rgba(255, 255, 255, 0.65);
-            box-shadow: 
-                0 25px 50px -12px rgba(159, 18, 57, 0.18),
-                0 0 0 1px rgba(255, 255, 255, 0.4) inset;
+                0 25px 50px -12px rgba(159, 18, 57, 0.22),
+                0 0 0 1px rgba(255, 255, 255, 0.42) inset;
         }
 
         /* Задержки для анимации последовательного появления */
@@ -102,11 +96,116 @@
 </head>
 <body class="soft-red-gradient animate-gradient-xy min-h-screen w-full flex flex-col items-center justify-center p-4 sm:p-6 relative overflow-x-hidden text-rose-950 selection:bg-rose-400 selection:text-white">
 
-    <!-- Декоративные размытые блики на фоне для глубины -->
+    <!-- Декоративные размытые блики и паучьи лилии на фоне для атмосферы -->
     <div class="pointer-events-none fixed inset-0 overflow-hidden z-0">
+        <!-- Световые блики -->
         <div class="absolute -top-24 -left-24 w-80 h-80 sm:w-96 sm:h-96 bg-rose-300/65 rounded-full blur-3xl animate-float"></div>
         <div class="absolute bottom-10 -right-20 w-72 h-72 sm:w-96 sm:h-96 bg-red-600/40 rounded-full blur-3xl animate-float" style="animation-delay: 2.5s;"></div>
         <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[34rem] h-[34rem] bg-rose-200/35 rounded-full blur-3xl"></div>
+
+        <!-- Фоновая паучья лилия: левый верхний угол -->
+        <div class="absolute -top-6 -left-6 sm:top-4 sm:left-6 w-52 h-52 sm:w-72 sm:h-72 opacity-25 text-rose-950 animate-sway-slow origin-bottom">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="w-full h-full transform rotate-12">
+                <path d="M60 118 Q56 88 60 62" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <g stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none">
+                    <path d="M60 64 C36 60 18 74 12 92 C22 86 32 82 42 86"/>
+                    <path d="M60 64 C84 60 102 74 108 92 C98 86 88 82 78 86"/>
+                    <path d="M60 62 C30 50 14 56 6 70 C16 66 26 66 34 72"/>
+                    <path d="M60 62 C90 50 106 56 114 70 C104 66 94 66 86 72"/>
+                    <path d="M60 60 C40 40 24 38 14 48 C24 46 32 48 38 54"/>
+                    <path d="M60 60 C80 40 96 38 106 48 C96 46 88 48 82 54"/>
+                </g>
+                <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none">
+                    <path d="M60 60 C46 36 30 22 16 20"/>
+                    <path d="M60 60 C52 32 42 16 32 10"/>
+                    <path d="M60 60 C60 30 60 14 60 6"/>
+                    <path d="M60 60 C68 32 78 16 88 10"/>
+                    <path d="M60 60 C74 36 90 22 104 20"/>
+                </g>
+                <g fill="#fff1f2">
+                    <circle cx="16" cy="20" r="2.2"/>
+                    <circle cx="32" cy="10" r="2.2"/>
+                    <circle cx="60" cy="6" r="2.2"/>
+                    <circle cx="88" cy="10" r="2.2"/>
+                    <circle cx="104" cy="20" r="2.2"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- Фоновая паучья лилия: правый нижний угол -->
+        <div class="absolute -bottom-8 -right-6 sm:bottom-2 sm:right-6 w-60 h-60 sm:w-80 sm:h-80 opacity-25 text-rose-950 animate-sway-slow origin-bottom" style="animation-delay: 3s;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="w-full h-full transform -rotate-12">
+                <path d="M60 118 Q64 88 60 62" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+                <g stroke="currentColor" stroke-width="2.6" stroke-linecap="round" fill="none">
+                    <path d="M60 64 C36 60 18 74 12 92 C22 86 32 82 42 86"/>
+                    <path d="M60 64 C84 60 102 74 108 92 C98 86 88 82 78 86"/>
+                    <path d="M60 62 C30 50 14 56 6 70 C16 66 26 66 34 72"/>
+                    <path d="M60 62 C90 50 106 56 114 70 C104 66 94 66 86 72"/>
+                    <path d="M60 60 C40 40 24 38 14 48 C24 46 32 48 38 54"/>
+                    <path d="M60 60 C80 40 96 38 106 48 C96 46 88 48 82 54"/>
+                </g>
+                <g stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none">
+                    <path d="M60 60 C46 36 30 22 16 20"/>
+                    <path d="M60 60 C52 32 42 16 32 10"/>
+                    <path d="M60 60 C60 30 60 14 60 6"/>
+                    <path d="M60 60 C68 32 78 16 88 10"/>
+                    <path d="M60 60 C74 36 90 22 104 20"/>
+                </g>
+                <g fill="#fff1f2">
+                    <circle cx="16" cy="20" r="2.2"/>
+                    <circle cx="32" cy="10" r="2.2"/>
+                    <circle cx="60" cy="6" r="2.2"/>
+                    <circle cx="88" cy="10" r="2.2"/>
+                    <circle cx="104" cy="20" r="2.2"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- Дополнительный легкий цветок слева снизу -->
+        <div class="hidden sm:block absolute bottom-12 left-10 w-44 h-44 opacity-20 text-rose-900 animate-sway-slow origin-bottom" style="animation-delay: 1.5s;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="w-full h-full transform rotate-6">
+                <path d="M60 118 Q58 88 60 62" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                <g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none">
+                    <path d="M60 64 C36 60 18 74 12 92 C22 86 32 82 42 86"/>
+                    <path d="M60 64 C84 60 102 74 108 92 C98 86 88 82 78 86"/>
+                    <path d="M60 62 C30 50 14 56 6 70 C16 66 26 66 34 72"/>
+                    <path d="M60 62 C90 50 106 56 114 70 C104 66 94 66 86 72"/>
+                </g>
+                <g stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none">
+                    <path d="M60 60 C46 36 30 22 16 20"/>
+                    <path d="M60 60 C60 30 60 14 60 6"/>
+                    <path d="M60 60 C74 36 90 22 104 20"/>
+                </g>
+                <g fill="#fff1f2">
+                    <circle cx="16" cy="20" r="2"/>
+                    <circle cx="60" cy="6" r="2"/>
+                    <circle cx="104" cy="20" r="2"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- Дополнительный легкий цветок справа сверху -->
+        <div class="hidden sm:block absolute top-14 right-12 w-40 h-40 opacity-20 text-rose-900 animate-sway-slow origin-bottom" style="animation-delay: 4.5s;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" class="w-full h-full transform -rotate-15">
+                <path d="M60 118 Q62 88 60 62" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+                <g stroke="currentColor" stroke-width="2.4" stroke-linecap="round" fill="none">
+                    <path d="M60 64 C36 60 18 74 12 92 C22 86 32 82 42 86"/>
+                    <path d="M60 64 C84 60 102 74 108 92 C98 86 88 82 78 86"/>
+                    <path d="M60 62 C30 50 14 56 6 70 C16 66 26 66 34 72"/>
+                    <path d="M60 62 C90 50 106 56 114 70 C104 66 94 66 86 72"/>
+                </g>
+                <g stroke="currentColor" stroke-width="1.4" stroke-linecap="round" fill="none">
+                    <path d="M60 60 C46 36 30 22 16 20"/>
+                    <path d="M60 60 C60 30 60 14 60 6"/>
+                    <path d="M60 60 C74 36 90 22 104 20"/>
+                </g>
+                <g fill="#fff1f2">
+                    <circle cx="16" cy="20" r="2"/>
+                    <circle cx="60" cy="6" r="2"/>
+                    <circle cx="104" cy="20" r="2"/>
+                </g>
+            </svg>
+        </div>
     </div>
 
     <!-- Главная карточка-контейнер -->
@@ -234,6 +333,35 @@
                 </span>
                 <span class="tracking-wide">TikTok</span>
                 <span class="w-9 h-9 flex items-center justify-center text-rose-500 group-hover:text-rose-700 group-hover:translate-x-1 transition-all duration-300">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </span>
+            </a>
+
+            <!-- Разделитель и заголовок раздела "проекты:" -->
+            <div class="pt-3 pb-1 flex items-center gap-3">
+                <div class="h-px flex-1 bg-rose-300/60"></div>
+                <span class="font-display text-xs sm:text-sm font-bold tracking-wider text-rose-900/80 lowercase">
+                    проекты:
+                </span>
+                <div class="h-px flex-1 bg-rose-300/60"></div>
+            </div>
+
+            <!-- Кнопка проекта: Discord модер -->
+            <a 
+                href="https://discord.gg/u9CaTBkgp" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="group relative w-full flex items-center justify-between px-5 py-4 rounded-full bg-white/85 hover:bg-gradient-to-r hover:from-rose-600 hover:to-red-600 text-rose-950 hover:text-white font-semibold text-[15px] sm:text-base border border-rose-300/90 hover:border-transparent shadow-md shadow-rose-900/10 hover:shadow-xl hover:shadow-rose-600/35 transform hover:-translate-y-0.5 hover:scale-[1.02] active:scale-[0.98] transition-all duration-300">
+                <span class="flex items-center justify-center w-9 h-9 rounded-full bg-rose-100 text-rose-600 group-hover:bg-white/20 group-hover:text-white group-hover:scale-110 transition-all duration-300">
+                    <!-- Иконка Discord -->
+                    <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286zM8.02 15.3312c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9555-2.4189 2.157-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.9555 2.4189-2.1569 2.4189zm7.9748 0c-1.1825 0-2.1569-1.0857-2.1569-2.419 0-1.3332.9554-2.4189 2.1569-2.4189 1.2108 0 2.1757 1.0952 2.1568 2.419 0 1.3332-.946 2.4189-2.1568 2.4189Z"/>
+                    </svg>
+                </span>
+                <span class="tracking-wide">Discord модер</span>
+                <span class="w-9 h-9 flex items-center justify-center text-rose-500 group-hover:text-white group-hover:translate-x-1 transition-all duration-300">
                     <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
